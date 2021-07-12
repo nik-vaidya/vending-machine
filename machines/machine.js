@@ -8,6 +8,7 @@ const defaultAmount = {
     currency: "INR"
 }
 
+const supportedCurrecy = ["EUR", "INR", "USD"]
 
 global.TotalCash = 0
 global.State = constants.READY_STATE
@@ -28,6 +29,10 @@ const collectCash = async function (req, res) {
         let body = req.body
         if (State != constants.READY_STATE) {
             throw new Error("Cash is collected, please select an item")
+        }
+        let currency = _.get(body, "currency", "")
+        if (!supportedCurrecy.includes(currency)) {
+            throw new Error("This currency yet not supported. We will be adding support soon!!")
         }
         CashCollected = body
         State = constants.CASH_COLLECTED_STATE
@@ -105,7 +110,7 @@ const dispenseItem = async function (req, res) {
         var currency = CashCollected.currency
         let item = await inventoryOperation.getItem(itemName)
         // check if selected item was never in stock
-        if(_.isEmpty(item)){
+        if (_.isEmpty(item)) {
             throw new Error("Invalid item. Please select the item on list")
         }
         // check for out of stock

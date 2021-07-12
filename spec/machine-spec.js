@@ -44,6 +44,20 @@ describe("Test :: ", () => {
         await machine.collectCash(req, response)
         done()
     })
+
+    it("Collect Cash :: failure :: invalid currency", async (done) => {
+        let req = {
+            body: {
+                "amount": 20,
+                "currency": "WON"
+            }
+        }
+        spyOn(response, "send").and.callFake(function (result) {
+            expect(result).toEqual({ status: 'failure', statusCode: 500, message: 'This currency yet not supported. We will be adding support soon!!' })
+        })
+        await machine.collectCash(req, response)
+        done()
+    })
 })
 
 
