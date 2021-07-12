@@ -2,9 +2,10 @@
 Vending machine designed in Node.js
 
 ## Prerequisite
- 1. MongoDB
- 2. Node.js
+ 1. Install MongoDB
+ 2. Install Node.js
  3. Update `conf.json` according to your configuration
+ 4. Run `npm install`
 
 ## How to Run
 To Run this application enter below command
