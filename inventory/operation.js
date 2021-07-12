@@ -22,6 +22,9 @@ const getDocInDB = async function () {
 const getItem = async function (itemName) {
     try {
         let inventory = await getDocInDB()
+        if (_.isEmpty(inventory)) {
+            throw new Error("All items are out of stock")
+        }
         let stock = inventory['items']
         var item = {}
         for (var i in stock) {

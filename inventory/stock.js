@@ -82,17 +82,21 @@ let getStock = async function (req, res) {
         console.log("Listing all items in inventory")
         let doc = await operation.getDocInDB()
         let items = _.get(doc, "items", [])
+        if (_.isEmpty(items)) {
+            throw new Error("Stock is empty please add items")
+        }
         res.send({
             "status": "success",
             "statusCode": 200,
             "items": items
         })
     } catch (error) {
-        console.error("Error while fetching items" + error.message)
+        console.error("Error while fetching stock :: " + error.message)
         res.send({
             "status": "failure",
             "statusCode": 500,
-            "message": error.message
+            "message": error.message,
+            "items": []
         })
     }
 }

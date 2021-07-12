@@ -84,6 +84,23 @@ describe("TEST :: getItemInDB", () => {
         }
         done()
     })
+
+    it("failure :: item is out of stock", async (done) => {
+        let returnValue = {
+            findOne: function (query) {
+                return {
+                    lean: function () {
+                        return ""
+                    }
+                }
+            }
+        }
+        spyOn(inventorySch, "createModel").and.returnValue(returnValue)
+        inventoryOp.getItem("coke").catch((err)=>{
+            expect(err.message).toEqual("All items are out of stock")
+        })
+        done()
+    })
 })
 
 describe("TEST :: upsertDataInDb", () => {

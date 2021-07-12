@@ -10,7 +10,7 @@ const response = {
     }
 }
 
-describe("Test :: Collect Cash", () => {
+describe("Test :: ", () => {
 
     afterEach(() => {
         State = constants.READY_STATE
@@ -39,7 +39,7 @@ describe("Test :: Collect Cash", () => {
         }
         State = constants.CASH_COLLECTED_STATE
         spyOn(response, "send").and.callFake(function (result) {
-            expect(result).toEqual({ status: 'failure', statusCode: 500, message: 'Machine is not in Ready state' })
+            expect(result).toEqual({ status: 'failure', statusCode: 500, message: 'Cash is collected, please select an item' })
         })
         await machine.collectCash(req, response)
         done()
@@ -163,6 +163,24 @@ describe("Test :: Dispense item", () => {
         })
         spyOn(response, "send").and.callFake(function (result) {
             expect(result).toEqual({ status: 'failure', statusCode: 500, message: 'coke is out of stock', item: '', change: 5 })
+        })
+        await machine.dispenseItem(req, response)
+        done()
+    })
+    it("Dispense item :: failure :: invalid item", async (done) => {
+        let req = {
+            body: {
+                "name": "coke"
+            }
+        }
+        CashCollected = {
+            amount: 5,
+            currency: "INR"
+        }
+        State = constants.CASH_COLLECTED_STATE
+        spyOn(inventoryOps, "getItem").and.returnValue({})
+        spyOn(response, "send").and.callFake(function (result) {
+            expect(result).toEqual({ status: 'failure', statusCode: 500, message: 'Invalid item. Please select the item on list', item: '', change: 5 })
         })
         await machine.dispenseItem(req, response)
         done()

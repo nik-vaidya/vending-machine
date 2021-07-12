@@ -147,7 +147,17 @@ describe("TEST :: getSock ::", () => {
         let req = {}
         spyOn(inventoryOp, "getDocInDB").and.throwError("Unable to get document")
         spyOn(response, "send").and.callFake(function (result) {
-            expect(result).toEqual({ status: 'failure', statusCode: 500, message: 'Unable to get document' })
+            expect(result).toEqual({ status: 'failure', statusCode: 500, message: 'Unable to get document', "items":[] })
+        })
+        await stock.getStock(req, response)
+        done()
+    })
+
+    it("failure :: stock is empty", async (done) => {
+        let req = {}
+        spyOn(inventoryOp, "getDocInDB").and.returnValue({})
+        spyOn(response, "send").and.callFake(function (result) {
+            expect(result).toEqual({ status: 'failure', statusCode: 500, message: 'Stock is empty please add items', items: [] })
         })
         await stock.getStock(req, response)
         done()

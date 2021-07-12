@@ -27,7 +27,7 @@ const collectCash = async function (req, res) {
         console.log("Collecting the amount")
         let body = req.body
         if (State != constants.READY_STATE) {
-            throw new Error("Machine is not in Ready state")
+            throw new Error("Cash is collected, please select an item")
         }
         CashCollected = body
         State = constants.CASH_COLLECTED_STATE
@@ -104,6 +104,10 @@ const dispenseItem = async function (req, res) {
         amt = CashCollected.amount
         var currency = CashCollected.currency
         let item = await inventoryOperation.getItem(itemName)
+        // check if selected item was never in stock
+        if(_.isEmpty(item)){
+            throw new Error("Invalid item. Please select the item on list")
+        }
         // check for out of stock
         if (item["quantity"] == 0) {
             throw new Error(item["name"] + " is out of stock")
