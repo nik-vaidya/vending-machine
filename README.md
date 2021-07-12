@@ -1,5 +1,5 @@
 # vending-machine
-Vending machine designed in Node.js which will dispense item for cash in rupees, dollars and euros
+Vending machine designed in Node.js which will dispense any item of your choice for cash in rupees, dollars and euros
 
 ## Prerequisite
  1. Install MongoDB
